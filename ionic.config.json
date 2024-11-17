@@ -1,0 +1,7 @@
+{
+  "name": "artesanos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
