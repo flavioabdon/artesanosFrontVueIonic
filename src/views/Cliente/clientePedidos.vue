@@ -1,9 +1,25 @@
 <template>
-    <ion-page>
+    <ion-menu content-id="main-content">
         <ion-header>
-            <ion-title>Pedidos del usuario</ion-title>
+        <ion-toolbar color="tertiary">
+            <ion-title>Menu</ion-title>
+        </ion-toolbar>
         </ion-header>
-        <ion-content>
+        <!--Contenido menu lateral-->
+        <ion-content class="ion-padding">This is the menu content.</ion-content>
+    </ion-menu>
+  <!--Pagina-->
+    <ion-page id="main-content">
+        <ion-header>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                <ion-menu-button></ion-menu-button>
+                </ion-buttons>
+                <ion-title class="ion-text-center">Pedidos del usuario</ion-title>
+            </ion-toolbar>
+            
+        </ion-header>
+        <ion-content class="ion-padding">
             <ion-grid>
                 <ion-row class="ion-justify-content-center ion-align-items-center" style="height: 100vh;">
                     <ion-col size="4">
@@ -49,14 +65,17 @@
 
 <script>
 import {
+    IonButtons, IonContent, IonMenu, IonMenuButton, IonToolbar,
     IonToast, IonItem, IonInput, IonCardContent, IonCardHeader,
     IonCardTitle, IonGrid, IonRow, IonCol, IonCard, IonPage, IonHeader, IonTitle, IonButton, IonIcon
 } from '@ionic/vue';
 import { addIcons } from 'ionicons';
+import { defineComponent } from 'vue';
 
 export default {
     name: 'clientePedidosComponent',
     components: {
+        IonButtons, IonContent, IonMenu, IonMenuButton, IonToolbar,
         IonToast, IonItem, IonInput, IonCardContent, IonCardHeader,
         IonCardTitle, IonGrid, IonRow, IonCol, IonCard, IonPage, IonHeader, IonTitle, IonButton, IonIcon
     },
@@ -109,3 +128,14 @@ export default {
     }
 };
 </script>
+<style>
+  ion-menu::part(backdrop) {
+    background-color: rgba(0, 0, 0, 0.144);
+  }
+
+  ion-menu::part(container) {
+    border-radius: 0 20px 20px 0;
+
+    box-shadow: 4px 0px 16px rgba(2, 43, 90, 0.18);
+  }
+</style>
