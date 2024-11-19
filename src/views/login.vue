@@ -133,11 +133,13 @@ export default {
                 } else {
                     // Muestra el mensaje de error en el toast
                     this.toastMessage = data.message || 'Error al iniciar sesión';
+                    this.errorMessage = 'Error al iniciar sesión';
                     this.showErrorToast= true;
                 }
             } catch (error) {
                 // Manejo de errores de solicitud
                 this.toastMessage = 'Error en la solicitud: ' + error.message;
+                this.errorMessage = 'Error al la solicitud';
                 this.showErrorToast = true;
             }
         },
