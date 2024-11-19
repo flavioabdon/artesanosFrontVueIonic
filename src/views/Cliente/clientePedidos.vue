@@ -6,7 +6,23 @@
         </ion-toolbar>
         </ion-header>
         <!--Contenido menu lateral-->
-        <ion-content class="ion-padding">This is the menu content.</ion-content>
+        <ion-content class="ion-padding">
+            <!-- Sección de Perfil -->
+            <div class="profile-section">
+                <!-- Imagen de Perfil -->
+                <img 
+                src="http://localhost:3001/uploads/1731642298431-646206073.jpg" 
+                alt="Foto de Perfil" 
+                style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
+                
+                <!-- Nombre del Usuario -->
+                <h2 class="ion-margin-top">{{ usuario.nombre }}</h2>
+                <p class="ion-margin-bottom">{{ usuario.email }}</p>
+            </div>
+
+            <!-- Otro contenido del menú lateral -->
+            </ion-content>
+        
     </ion-menu>
   <!--Pagina-->
     <ion-page id="main-content">
@@ -122,6 +138,8 @@ export default {
             // Muestra un mensaje de éxito al cerrar sesión
             this.showToastMessage('Has cerrado sesión exitosamente.');
 
+            console.log("Cerrando sesion");
+
             // Redirige a la página de inicio de sesión
             this.$router.push('/login'); // O ajusta la ruta a la de inicio de sesión según tu configuración
         }
@@ -138,4 +156,13 @@ export default {
 
     box-shadow: 4px 0px 16px rgba(2, 43, 90, 0.18);
   }
+  .profile-section {
+  text-align: center;
+  background: linear-gradient(135deg, #2868a4,  #084279); /* O usa una imagen con url('/ruta-al-fondo.jpg') */
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  border-radius: 15px;
+  color: white; 
+}
 </style>

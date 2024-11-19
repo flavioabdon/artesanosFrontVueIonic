@@ -23,7 +23,7 @@
                                             placeholder="Ingresa tu email"
                                             required
                                         ></ion-input>
-                                    </ion-item>
+                                    </ion-item><br>
 
                                     <ion-item>
                                         <ion-input
