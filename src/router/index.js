@@ -1,11 +1,29 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import TabsPage from '../views/TabsPage.vue'
+import loginComponent from '../views/login.vue'
+import clientePedidosComponent from '../views/Cliente/clientePedidos.vue'
+import deliveryPedidosComponent from '../views/Delivery/deliveryPedidos.vue'
 
 const routes = [
   {
     path: '/',
     redirect: '/tabs/tab1'
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: loginComponent
+  },  
+  {
+    path: '/bienvenidaCliente',
+    name: 'bienvenidaCliente',
+    component: clientePedidosComponent
+  },  
+  {
+    path: '/bienvenidaDelivery',
+    name: 'bienvenidoDelivery',
+    component: deliveryPedidosComponent
+  },  
   {
     path: '/tabs/',
     component: TabsPage,
