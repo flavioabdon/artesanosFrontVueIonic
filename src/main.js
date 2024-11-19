@@ -41,3 +41,12 @@ const app = createApp(App)
 router.isReady().then(() => {
   app.mount('#app');
 });
+
+/* Añadir todos los iconos */
+import { addIcons } from 'ionicons';
+import { logOutOutline } from 'ionicons/icons';
+
+// Registra el icono
+addIcons({
+    'log-out-outline': logOutOutline
+});

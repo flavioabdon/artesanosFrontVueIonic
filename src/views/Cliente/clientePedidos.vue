@@ -6,12 +6,12 @@
         </ion-toolbar>
         </ion-header>
         <!--Contenido menu lateral-->
-        <ion-content class="ion-padding">
+        <ion-content class="ion-padding" tyle="display: flex; flex-direction: column; justify-content: space-between;">
             <!-- Sección de Perfil -->
             <div class="profile-section">
                 <!-- Imagen de Perfil -->
                 <img 
-                src="http://localhost:3001/uploads/1731642298431-646206073.jpg" 
+                :src="'http://localhost:3001/' + usuario.fotoperf_url" 
                 alt="Foto de Perfil" 
                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
                 
@@ -20,8 +20,19 @@
                 <p class="ion-margin-bottom">{{ usuario.email }}</p>
             </div>
 
-            <!-- Otro contenido del menú lateral -->
-            </ion-content>
+              <!-- Otro contenido -->
+            <div>
+                This is the menu content.
+            </div>
+
+            <!-- Botón Cerrar Sesión -->
+            <div style="display: flex; align-items: center; justify-content: center; margin-top: auto; padding-top: 16px;">
+                <ion-icon name="log-out-outline" style="font-size: 24px; margin-right: 8px; color: var(--ion-color-danger);"></ion-icon>
+                <span style="font-size: 16px; font-weight: bold; color: var(--ion-color-danger);">
+                    Cerrar Sesión
+                </span>
+            </div>
+        </ion-content>
         
     </ion-menu>
   <!--Pagina-->
@@ -85,8 +96,9 @@ import {
     IonToast, IonItem, IonInput, IonCardContent, IonCardHeader,
     IonCardTitle, IonGrid, IonRow, IonCol, IonCard, IonPage, IonHeader, IonTitle, IonButton, IonIcon
 } from '@ionic/vue';
-import { addIcons } from 'ionicons';
+
 import { defineComponent } from 'vue';
+
 
 export default {
     name: 'clientePedidosComponent',
