@@ -61,6 +61,14 @@
                 @did-close="showToast = false"
                 color="success"
             ></ion-toast>
+            <!-- Toast de error -->
+            <ion-toast
+                :is-open="showErrorToast"
+                :message="errorMessage"
+                duration="2000"
+                @did-close="showErrorToast = false"
+                color="danger"
+            ></ion-toast>
         </ion-content>
     </ion-page>
 </template>
@@ -125,12 +133,12 @@ export default {
                 } else {
                     // Muestra el mensaje de error en el toast
                     this.toastMessage = data.message || 'Error al iniciar sesión';
-                    this.showToast = true;
+                    this.showErrorToast= true;
                 }
             } catch (error) {
                 // Manejo de errores de solicitud
                 this.toastMessage = 'Error en la solicitud: ' + error.message;
-                this.showToast = true;
+                this.showErrorToast = true;
             }
         },
         clearFields() {
