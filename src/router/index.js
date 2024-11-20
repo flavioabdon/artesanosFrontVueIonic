@@ -3,6 +3,7 @@ import TabsPage from '../views/TabsPage.vue'
 import loginComponent from '../views/login.vue'
 import clientePedidosComponent from '../views/Cliente/clientePedidos.vue'
 import deliveryPedidosComponent from '../views/Delivery/deliveryPedidos.vue'
+import mostrarDeliveryIdComponent from '../views/Cliente/mostrarDelivery.vue'
 
 const routes = [
   {
@@ -23,7 +24,13 @@ const routes = [
     path: '/bienvenidaDelivery',
     name: 'bienvenidoDelivery',
     component: deliveryPedidosComponent
-  },  
+  },
+  {
+    path: '/mostrarDelivery/:idDelivery',
+    name: 'mostrarDelivery',
+    component: mostrarDeliveryIdComponent,
+    props: true, //pasa el parámetro como una prop al componente
+  }, 
   {
     path: '/tabs/',
     component: TabsPage,

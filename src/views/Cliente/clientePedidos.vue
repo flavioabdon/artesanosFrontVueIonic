@@ -71,7 +71,16 @@
                             <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.num_fila }}</td>
                             <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.id_pedido }}</td>
                             <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.id_usuario_artesano }}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.id_usuario_delivery || 'Sin asignar' }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <ion-button 
+                                    :disabled="!compra.id_usuario_delivery" 
+                                    @click="irADelivery(compra.id_usuario_delivery)" 
+                                    :color="compra.id_usuario_delivery ? 'primary' : 'light'"
+                                    fill="solid"
+                                    size="small">
+                                    {{ compra.id_usuario_delivery ? 'Ver Delivery' : 'Sin asignar' }}
+                                </ion-button>
+                            </td>
                             <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.estado }}</td>
                             <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.suma_total_productos }}</td>
                             <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.costo_envio }}</td>
@@ -173,17 +182,21 @@ export default {
 
         async cargarDatos() {
             try {
-                const response = await fetch('http://localhost:3001/listarComprasCliente/34');
+                const response = await fetch(`http://localhost:3001/listarComprasCliente/${this.usuario.id_usuario}`);
                 if (!response.ok) throw new Error('Error al cargar datos');
                 const data = await response.json();
                 this.compras = data;
             } catch (error) {
                 console.error('Error al cargar datos:', error);
             }
+        },
+        irADelivery(idDelivery) {
+        this.$router.push(`/mostrarDelivery/${idDelivery}`);
         }
+        
     },
     mounted() {
-    this.cargarDatos(); // Cargar datos al montar el componente
+        this.cargarDatos(); // Cargar datos al montar el componente
     }
 };
 </script>
