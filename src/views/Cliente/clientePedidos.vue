@@ -1,7 +1,7 @@
 <template>
     <ion-menu content-id="main-content">
         <ion-header>
-        <ion-toolbar color="tertiary">
+        <ion-toolbar color="secondary">
             <ion-title>Menu</ion-title>
         </ion-toolbar>
         </ion-header>
@@ -26,9 +26,11 @@
             </div>
 
             <!-- Botón Cerrar Sesión -->
-            <div style="display: flex; align-items: center; justify-content: center; margin-top: auto; padding-top: 16px;">
-                <ion-icon name="log-out-outline" style="font-size: 24px; margin-right: 8px; color: var(--ion-color-danger);"></ion-icon>
-                <span style="font-size: 16px; font-weight: bold; color: var(--ion-color-danger);">
+            <div 
+                @click="logout"
+                style="display: flex; align-items: center; justify-content: center; margin-top: auto; padding-top: 16px; cursor: pointer;">
+                <ion-icon name="log-out-outline" style="font-size: 24px; margin-right: 8px; color: var(--ion-color-medium);"></ion-icon>
+                <span style="font-size: 16px; font-weight: bold; color: var(--ion-color-medium);">
                     Cerrar Sesión
                 </span>
             </div>
@@ -49,26 +51,37 @@
         <ion-content class="ion-padding">
             <ion-grid>
                 <ion-row class="ion-justify-content-center ion-align-items-center" style="height: 100vh;">
-                    <ion-col size="4">
-                        <ion-card>
-                            <ion-card-header>
-                                <ion-card-title>Bienvenido, {{ usuario.nombre }}</ion-card-title>
-                            </ion-card-header>
-
-                            <ion-card-content>
-                                <p>Mostrar Clientes</p>
-                                
-                                <!-- Botón de Cerrar Sesión -->
-                                <ion-button expand="full" color="danger" @click="logout">
-                                    <ion-icon slot="start" name="log-out"></ion-icon>
-                                    Cerrar sesión
-                                </ion-button>
-                            </ion-card-content>
-                        </ion-card>
+                    <ion-col size="10">
+                        <!-- Tabla -->
+                        <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">#</th>
+                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">ID Pedido</th>
+                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">ID Artesano</th>
+                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">ID Delivery</th>
+                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">Estado</th>
+                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">Costo Productos</th>
+                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">Costo Envío</th>
+                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="compra in compras" :key="compra.id_pedido">
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.num_fila }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.id_pedido }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.id_usuario_artesano }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.id_usuario_delivery || 'Sin asignar' }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.estado }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.suma_total_productos }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.costo_envio }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.suma_total }}</td>
+                            </tr>
+                        </tbody>
+                        </table>
                     </ion-col>
                 </ion-row>
             </ion-grid>
-
             <!-- Toast de éxito -->
             <ion-toast
                 :is-open="showToast"
@@ -118,7 +131,9 @@ export default {
 
             // Controla el estado del toast de error
             showErrorToast: false,
-            errorMessage: ''
+            errorMessage: '',
+
+            compras: [] // Aquí se almacenarán los datos de la API
         };
     },
     mounted() {
@@ -154,7 +169,21 @@ export default {
 
             // Redirige a la página de inicio de sesión
             this.$router.push('/login'); // O ajusta la ruta a la de inicio de sesión según tu configuración
+        },
+
+        async cargarDatos() {
+            try {
+                const response = await fetch('http://localhost:3001/listarComprasCliente/34');
+                if (!response.ok) throw new Error('Error al cargar datos');
+                const data = await response.json();
+                this.compras = data;
+            } catch (error) {
+                console.error('Error al cargar datos:', error);
+            }
         }
+    },
+    mounted() {
+    this.cargarDatos(); // Cargar datos al montar el componente
     }
 };
 </script>
@@ -177,4 +206,18 @@ export default {
   border-radius: 15px;
   color: white; 
 }
+.cerrar-sesion{
+    background-color: black;
+}
+table th, table td {
+  text-align: center;
+  font-size: 14px;
+}
+table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+table tr:hover {
+  background-color: #f1f1f1;
+}
+
 </style>
