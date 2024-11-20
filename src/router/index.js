@@ -4,6 +4,7 @@ import loginComponent from '../views/login.vue'
 import clientePedidosComponent from '../views/Cliente/clientePedidos.vue'
 import deliveryPedidosComponent from '../views/Delivery/deliveryPedidos.vue'
 import mostrarDeliveryIdComponent from '../views/Cliente/mostrarDelivery.vue'
+import mostrarPedidosIdComponent from '../views/Cliente/mostrarPedidos.vue'
 
 const routes = [
   {
@@ -29,6 +30,12 @@ const routes = [
     path: '/mostrarDelivery/:idDelivery',
     name: 'mostrarDelivery',
     component: mostrarDeliveryIdComponent,
+    props: true, //pasa el parámetro como una prop al componente
+  }, 
+  {
+    path: '/mostrarPedidos/:idPedido',
+    name: 'mostrarPedidos',
+    component: mostrarPedidosIdComponent,
     props: true, //pasa el parámetro como una prop al componente
   }, 
   {

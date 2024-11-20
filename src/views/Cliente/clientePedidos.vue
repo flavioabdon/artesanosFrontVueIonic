@@ -69,7 +69,16 @@
                         <tbody>
                             <tr v-for="compra in compras" :key="compra.id_pedido">
                             <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.num_fila }}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.id_pedido }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <ion-button 
+                                    :disabled="!compra.id_pedido" 
+                                    @click="irAPedido(compra.id_pedido)" 
+                                    :color="compra.id_pedido ? 'primary' : 'light'"
+                                    fill="solid"
+                                    size="small">
+                                    {{ compra.id_pedido ? 'Ver Pedido' : 'Sin asignar' }}
+                                </ion-button>
+                            </td>
                             <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.id_usuario_artesano }}</td>
                             <td style="padding: 8px; border: 1px solid #ddd;">
                                 <ion-button 
@@ -81,13 +90,38 @@
                                     {{ compra.id_usuario_delivery ? 'Ver Delivery' : 'Sin asignar' }}
                                 </ion-button>
                             </td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.estado }}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">
+                                <template v-if="['En Casa', 'En casa'].includes(compra.estado)">
+                                    <ion-button 
+                                    color="primary" 
+                                    @click="confirmarEntrega(compra.id_pedido)"
+                                    >
+                                    Confirmar Entrega
+                                    </ion-button>
+                                </template>
+                                <template v-else>
+                                    <span style="font-size: 16px; color: var(--ion-color-medium);">
+                                    {{ compra.estado }}
+                                    </span>
+                                </template>
+                            </td>
                             <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.suma_total_productos }}</td>
                             <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.costo_envio }}</td>
                             <td style="padding: 8px; border: 1px solid #ddd;">{{ compra.suma_total }}</td>
                             </tr>
                         </tbody>
                         </table>
+                        <div justify="end">
+                            <h1>
+                                Total de compras:
+                                    {{
+                                        compras.reduce((total, compra) => {
+                                        //console.log("Iterando sobre compra:", compra.id_pedido); // Debug
+                                        return total + parseFloat(compra.suma_total);
+                                        }, 0)
+                                   }}
+                            </h1>
+                            </div> 
                     </ion-col>
                 </ion-row>
             </ion-grid>
@@ -142,16 +176,9 @@ export default {
             showErrorToast: false,
             errorMessage: '',
 
-            compras: [] // Aquí se almacenarán los datos de la API
+            compras: [], // Aquí se almacenarán los datos de la API
+            sumaTotal: 0
         };
-    },
-    mounted() {
-        // Si el objeto usuario tiene nombre, muestra un toast de bienvenida
-        if (this.usuario && this.usuario.nombre) {
-            this.showToastMessage(`Bienvenido, ${this.usuario.nombre}`);
-        } else {
-            this.showErrorMessage('No se encontró información del usuario.');
-        }
     },
     methods: {
         // Muestra el toast de éxito
@@ -190,13 +217,60 @@ export default {
                 console.error('Error al cargar datos:', error);
             }
         },
+        calcularSumaTotal() {
+            let total = 0;
+            console.log("hola");
+            for (let compra of this.compras) {
+                console.log("_aaaaaaaaaaaaaa"+compra.id_pedido);
+                total += parseFloat(compra.suma_total); // Convertir a número y sumar
+            }
+            this.sumaTotal = total;
+        },
         irADelivery(idDelivery) {
         this.$router.push(`/mostrarDelivery/${idDelivery}`);
+        },
+        irAPedido(idPedido) {
+        this.$router.push(`/mostrarPedidos/${idPedido}`);
+        },
+        async confirmarEntrega(idPedido) {
+            try {
+            const response = await fetch('http://localhost:3001/confirmar_entrega', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id_pedido: idPedido })
+            });
+
+            if (!response.ok) throw new Error('Error al confirmar entrega');
+
+            const data = await response.json();
+
+            // Mostrar mensaje de éxito o actualizar la interfaz
+            alert(`Entrega confirmada para el pedido ${idPedido}`);
+            console.log('Respuesta del servidor:', data);
+
+            // Opcional: Actualizar el estado de la entrega en la interfaz
+            const compra = this.compras.find(c => c.id_pedido === idPedido);
+            if (compra) {
+                compra.estado = 'Entregado'; // Cambiar a un estado actualizado, si aplica
+            }
+            } catch (error) {
+            console.error('Error al confirmar entrega:', error);
+            alert('No se pudo confirmar la entrega. Intente nuevamente.');
+            }
         }
-        
-    },
+            
+        },
     mounted() {
+        // Si el objeto usuario tiene nombre, muestra un toast de bienvenida
+        if (this.usuario && this.usuario.nombre) {
+            this.showToastMessage(`Bienvenido, ${this.usuario.nombre}`);
+        } else {
+            this.showErrorMessage('No se encontró información del usuario.');
+        }
         this.cargarDatos(); // Cargar datos al montar el componente
+        this.calcularSumaTotal();
     }
 };
 </script>
