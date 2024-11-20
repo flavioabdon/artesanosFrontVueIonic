@@ -50,7 +50,7 @@
         </ion-header>
         <ion-content class="ion-padding">
             <ion-grid>
-                <ion-row class="ion-justify-content-center ion-align-items-center" style="height: 100vh;">
+                <ion-row class="ion-justify-content-center" style="height: 100vh;">
                     <ion-col size="10">
                         <!-- Tabla -->
                         <table style="width: 100%; border-collapse: collapse;">
