@@ -12,6 +12,7 @@
                                 <p>Mostrar Pedidos</p>
                                 <h1>Detalles del Delivery</h1>
                                 <p>ID del pedido: {{ idPedido }}</p>
+                                <p>ID del pedido: {{ pedidos.nombre_prod }}</p>
                                     <!-- Iterar sobre los pedidos y mostrar los  productos -->
                                 <div>
                                     <h3>Nombre de productos</h3>
@@ -19,6 +20,7 @@
                                 <div 
                                     v-for="(producto, index) in pedidos" :key="index">
                                         <p>{{ producto.nombre_prod }}</p>
+                                        <p>{{ producto.descripcion }}</p>
                                 </div>
 
                             </ion-card-content>
@@ -81,3 +83,5 @@ export default {
     }
 };
 </script>
+<style>
+</style>
