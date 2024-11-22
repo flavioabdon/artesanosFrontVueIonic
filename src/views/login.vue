@@ -6,7 +6,7 @@
         <div class="background-pic">
             <div class="background-filter">
                 <div class="shape">
-                    <img src="../assets/shape.svg" />
+                    <!--<img src="../assets/shape.svg" />-->
                 </div>
                 <ion-card>
                     <ion-card-header>
