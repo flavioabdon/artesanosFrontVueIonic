@@ -85,7 +85,7 @@ export default {
         async cargarDatosDelivery() {
             try {
                 // Usamos la prop 'idDelivery' para hacer la solicitud
-                const response = await fetch(`http://localhost:3000/obtenerDatosDelivery/${this.idDelivery}`);
+                const response = await fetch(`http://192.168.134.20:3000/obtenerDatosDelivery/${this.idDelivery}`);
                 if (!response.ok) throw new Error('Error al cargar los datos del Delivery');
                 const data = await response.json();
                 this.deliveryData = data[0];

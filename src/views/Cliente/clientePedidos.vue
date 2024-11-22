@@ -209,7 +209,7 @@ export default {
 
         async cargarDatos() {
             try {
-                const response = await fetch(`http://localhost:3000/listarComprasCliente/${this.usuario.id_usuario}`);
+                const response = await fetch(`http://192.168.134.20:3000/listarComprasCliente/${this.usuario.id_usuario}`);
                 if (!response.ok) throw new Error('Error al cargar datos');
                 const data = await response.json();
                 this.compras = data;
