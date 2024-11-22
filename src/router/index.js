@@ -4,6 +4,7 @@ import deliveryPedidosComponent from '../views/Delivery/deliveryPedidos.vue'
 import mostrarDeliveryIdComponent from '../views/Cliente/mostrarDelivery.vue'
 import mostrarPedidosIdComponent from '../views/Cliente/mostrarPedidos.vue'
 import login from '../views/login.vue';
+import pedidosTomadosDeliveryComponent from '../views/Delivery/mostrarPedidosTomados.vue'
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     name: 'bienvenidoDelivery',
     component: deliveryPedidosComponent
   },
+  {
+    path: '/pedidosTomadosDelDelivery',
+    name: 'pedidosTomadosDelDelivery',
+    component: pedidosTomadosDeliveryComponent,
+  }, 
   {
     path: '/mostrarDelivery/:idDelivery',
     name: 'mostrarDelivery',

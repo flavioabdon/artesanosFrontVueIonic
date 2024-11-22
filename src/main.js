@@ -50,3 +50,6 @@ import { logOutOutline } from 'ionicons/icons';
 addIcons({
     'log-out-outline': logOutOutline
 });
+
+//
+import 'leaflet/dist/leaflet.css';

@@ -68,55 +68,28 @@
                         <table style="width: 100%; border-collapse: collapse;">
                         <thead>
                             <tr>
-                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">#</th>
-                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">ID Pedido</th>
-                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">ID Cliente</th>
-                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">Estado</th>
-                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">Dirección</th>
-                            <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">Costo de Envio</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">ID Pedido</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Cliente</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Estado</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Costo Envío</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="pedido in pedidosDelivery" :key="pedido.id_pedido">
-                            <td style="padding: 8px; border: 1px solid #ddd;">{{ pedido.num_fila  }}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">{{ pedido.id_pedido }}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">{{ pedido.id_usuario_cliente }}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">
-                                <!-- Mostrar el botón solo si el estado es 'En almacen' o 'En Almacen' -->
-                                <template v-if="pedido.estado === 'En almacen' || pedido.estado === 'En Almacen'">
-                                    <ion-button 
-                                    color="primary" 
-                                    @click="tomarPedido(pedido.id_pedido)" 
-                                    expand="block"
-                                    >
-                                    Tomar Pedido
-                                    </ion-button>
-                                </template>
-                                
-                                <!-- Mostrar el estado del pedido en caso contrario -->
-                                <template v-else>
-                                    {{ pedido.estado }}
-                                </template>
-                            </td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">
-                            <div>
-                                {{ pedido.direccion_envio }}
-                                <ion-button 
-                                size="small" 
-                                color="primary" 
-                                @click="mostrarMapa(pedido.direccion_envio)"
-                                >
-                                Ver Mapa
-                                </ion-button>
+                            <tr v-for="pedido in pedidos" :key="pedido.id_pedido">
+                            <td style="border: 1px solid #ddd; padding: 8px;">{{ pedido.id_pedido }}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">{{ pedido.id_usuario_cliente }}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">
+                            <div v-if="pedido.estado === 'En Camino' || pedido.estado === 'En camino'">
+                                <ion-button color="success" @click="marcarEnCasa(pedido.id_pedido)">En Casa</ion-button>
                             </div>
-
-                            <!-- Componente del Mapa -->
-                            <Mapa 
-                                v-if="direccionSeleccionada === pedido.direccion_envio" 
-                                :direccion="pedido.direccion_envio" 
-                            />
+                            <div v-else-if="pedido.estado === 'Finalizado' || pedido.estado === 'finalizado'">
+                                <ion-button color="light" disabled>Finalizado</ion-button>
+                            </div>
+                            <div v-else>
+                                {{ pedido.estado }}
+                            </div>
                             </td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">{{ pedido.costo_envio }}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">{{ pedido.costo_envio }}</td>
                             </tr>
                         </tbody>
                         </table>
@@ -145,7 +118,6 @@
 </template>
 
 <script>
-import Mapa from './mapa.vue'; // Componente del mapa
 import {
     IonButtons, IonContent, IonMenu, IonMenuButton, IonToolbar,
     IonToast, IonItem, IonInput, IonCardContent, IonCardHeader,
@@ -158,7 +130,6 @@ import { defineComponent } from 'vue';
 export default {
     name: 'clientePedidosComponent',
     components: {
-        Mapa,
         IonButtons, IonContent, IonMenu, IonMenuButton, IonToolbar,
         IonToast, IonItem, IonInput, IonCardContent, IonCardHeader,
         IonCardTitle, IonGrid, IonRow, IonCol, IonCard, IonPage, IonHeader, IonTitle, IonButton, IonIcon
@@ -176,9 +147,8 @@ export default {
             showErrorToast: false,
             errorMessage: '',
 
-            pedidosDelivery: [], // Aquí se almacenarán los datos de la API
-            sumaTotal: 0,
-            direccionSeleccionada: null, // Dirección actualmente seleccionada para mostrar el mapa
+            pedidos: [], // Aquí se almacenarán los datos de la API
+            sumaTotal: 0
         };
     },
     methods: {
@@ -208,68 +178,51 @@ export default {
             this.$router.push('/login'); // O ajusta la ruta a la de inicio de sesión según tu configuración
         },
 
-        async cargarPedidosDelivery() {
+        async cargarPedidosDeliveryPorId() {
             try {
-            const response = await fetch('http://localhost:3000/listarTodosLosPedidosDelivery', {
+            const response = await fetch(`http://localhost:3000/listarPedidosDeliveryPorId/${this.usuario.id_usuario}`, {
                 method: 'GET',
                 headers: {
                 'Content-Type': 'application/json',
                 },
             });
 
-            if (!response.ok) throw new Error('Error al cargar los pedidos');
+            if (!response.ok) throw new Error('Error al obtener los pedidos');
 
             const data = await response.json();
 
-            // Guardamos los pedidos en una variable
-            this.pedidosDelivery = data;
-
-            console.log('Pedidos cargados:', this.pedidosDelivery);
+            // Guardar los datos en una variable reactiva
+            this.pedidos = data;
             } catch (error) {
-            console.error('Error al cargar los pedidos:', error);
-            alert('No se pudo cargar la lista de pedidos. Intente nuevamente.');
+            console.error('Error al cargar los pedidos del delivery:', error);
             }
         },
-        async tomarPedido(idPedido) {
+        async marcarEnCasa(idPedido) {
             try {
-            const response = await fetch('http://localhost:3000/tomar_pedido_delivery', {
+            const response = await fetch('http://localhost:3000/delivery_en_casa', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                id_pedido: idPedido,
-                id_usuario: this.usuario.id_usuario, 
-                }),
+                body: JSON.stringify({ id_pedido: idPedido }),
             });
 
-            if (!response.ok) throw new Error('Error al tomar el pedido');
+            if (!response.ok) throw new Error('Error al marcar como "En Casa"');
 
-            const data = await response.json();
-
-            // Actualiza el estado del pedido en la lista si es necesario
-            this.actualizarEstadoPedido(idPedido, 'Tomado');
-            alert('Pedido tomado con éxito.');
-            } catch (error) {
-            console.error('Error al tomar  el pedido:', error);
-            alert('No se pudo tomar el pedido. Intente nuevamente.');
+            // Opcional: Actualizar el estado localmente
+            const pedido = this.pedidos.find((p) => p.id_pedido === idPedido);
+            if (pedido) {
+                pedido.estado = 'En Casa';
             }
-        },
-
-        // Método para actualizar el estado del pedido localmente (opcional)
-        actualizarEstadoPedido(idPedido, nuevoEstado) {
-            const pedido = this.pedidosDelivery.find((p) => p.id_pedido === idPedido);
-            if (pedido) pedido.estado = nuevoEstado;
-            window.location.reload();
+            } catch (error) {
+            console.error('Error al marcar como "En Casa":', error);
+            }
         },
         irAPedidosTomados() {
         this.$router.push(`/pedidosTomadosDelDelivery`);
         },
         irATomarPedidos() {
         this.$router.push(`/bienvenidaDelivery`);
-        },
-        mostrarMapa(direccion) {
-            this.direccionSeleccionada = direccion; // Actualiza la dirección seleccionada
         },  
         },
     mounted() {
@@ -278,8 +231,8 @@ export default {
             this.showToastMessage(`Bienvenido, ${this.usuario.nombre}`);
         } else {
             this.showErrorMessage('No se encontró información del usuario.');
-        }
-        this.cargarPedidosDelivery(); // Cargar datos al montar el componente
+        } // Cargar datos al montar el componente
+        this.cargarPedidosDeliveryPorId();
     }
 };
 </script>
