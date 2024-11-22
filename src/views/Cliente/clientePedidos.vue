@@ -11,7 +11,7 @@
             <div class="profile-section">
                 <!-- Imagen de Perfil -->
                 <img 
-                :src="'http://localhost:3001/' + usuario.fotoperf_url" 
+                :src="'http://localhost:3000/' + usuario.fotoperf_url" 
                 alt="Foto de Perfil" 
                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
                 
@@ -209,7 +209,7 @@ export default {
 
         async cargarDatos() {
             try {
-                const response = await fetch(`http://localhost:3001/listarComprasCliente/${this.usuario.id_usuario}`);
+                const response = await fetch(`http://localhost:3000/listarComprasCliente/${this.usuario.id_usuario}`);
                 if (!response.ok) throw new Error('Error al cargar datos');
                 const data = await response.json();
                 this.compras = data;
@@ -234,7 +234,7 @@ export default {
         },
         async confirmarEntrega(idPedido) {
             try {
-            const response = await fetch('http://localhost:3001/confirmar_entrega', {
+            const response = await fetch('http://localhost:3000/confirmar_entrega', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json'
