@@ -11,7 +11,7 @@
             <div class="profile-section">
                 <!-- Imagen de Perfil -->
                 <img 
-                :src="'http://localhost:3000/' + usuario.fotoperf_url" 
+                :src="'http://192.168.134.20:3000/' + usuario.fotoperf_url" 
                 alt="Foto de Perfil" 
                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
                 
@@ -180,7 +180,7 @@ export default {
 
         async cargarPedidosDeliveryPorId() {
             try {
-            const response = await fetch(`http://localhost:3000/listarPedidosDeliveryPorId/${this.usuario.id_usuario}`, {
+            const response = await fetch(`http://192.168.134.20:3000/listarPedidosDeliveryPorId/${this.usuario.id_usuario}`, {
                 method: 'GET',
                 headers: {
                 'Content-Type': 'application/json',
@@ -199,7 +199,7 @@ export default {
         },
         async marcarEnCasa(idPedido) {
             try {
-            const response = await fetch('http://localhost:3000/delivery_en_casa', {
+            const response = await fetch('http://192.168.134.20:3000/delivery_en_casa', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',

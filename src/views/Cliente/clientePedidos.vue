@@ -11,7 +11,7 @@
             <div class="profile-section">
                 <!-- Imagen de Perfil -->
                 <img 
-                :src="'http://localhost:3000/' + usuario.fotoperf_url" 
+                :src="'http://192.168.134.20:3000/' + usuario.fotoperf_url" 
                 alt="Foto de Perfil" 
                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
                 
@@ -234,7 +234,7 @@ export default {
         },
         async confirmarEntrega(idPedido) {
             try {
-            const response = await fetch('http://localhost:3000/confirmar_entrega', {
+            const response = await fetch('http://192.168.134.20:3000/confirmar_entrega', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json'
