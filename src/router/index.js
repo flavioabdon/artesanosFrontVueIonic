@@ -1,21 +1,20 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
-import TabsPage from '../views/TabsPage.vue'
-import loginComponent from '../views/login.vue'
 import clientePedidosComponent from '../views/Cliente/clientePedidos.vue'
 import deliveryPedidosComponent from '../views/Delivery/deliveryPedidos.vue'
 import mostrarDeliveryIdComponent from '../views/Cliente/mostrarDelivery.vue'
 import mostrarPedidosIdComponent from '../views/Cliente/mostrarPedidos.vue'
+import login from '../views/login.vue';
 
 const routes = [
   {
     path: '/',
-    redirect: '/tabs/tab1'
+    redirect: '/login'
   },
   {
     path: '/login',
     name: 'Login',
-    component: loginComponent
-  },  
+    component: login
+  },
   {
     path: '/bienvenidaCliente',
     name: 'bienvenidaCliente',
@@ -37,28 +36,6 @@ const routes = [
     name: 'mostrarPedidos',
     component: mostrarPedidosIdComponent,
     props: true, //pasa el parámetro como una prop al componente
-  }, 
-  {
-    path: '/tabs/',
-    component: TabsPage,
-    children: [
-      {
-        path: '',
-        redirect: '/tabs/tab1'
-      },
-      {
-        path: 'tab1',
-        component: () => import('@/views/Tab1Page.vue')
-      },
-      {
-        path: 'tab2',
-        component: () => import('@/views/Tab2Page.vue')
-      },
-      {
-        path: 'tab3',
-        component: () => import('@/views/Tab3Page.vue')
-      }
-    ]
   }
 ]
 

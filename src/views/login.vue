@@ -96,7 +96,7 @@ export default {
     methods: {
         async login() {
             try {
-                const response = await fetch('http://localhost:3000/auth/formIniciarSesion', {
+                const response = await fetch('http://localhost:3001/auth/formIniciarSesion', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
