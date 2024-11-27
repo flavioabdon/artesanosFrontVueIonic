@@ -61,7 +61,7 @@ export default {
     methods:{
         async cargarDatos() {
             try {
-                const response = await fetch(`http://192.168.134.20:3000/listarDetalleComprasCliente/${this.usuario.id_usuario}/${this.idPedido}`);
+                const response = await fetch(`http://localhost:3000/listarDetalleComprasCliente/${this.usuario.id_usuario}/${this.idPedido}`);
                 if (!response.ok) throw new Error('Error al cargar datos');
                 const data = await response.json();
                 this.pedidos = data;
