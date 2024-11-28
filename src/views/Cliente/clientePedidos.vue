@@ -58,8 +58,8 @@
                                 <ion-grid>
                                     <ion-row>
                                         <!-- Columna 1: Etiquetas -->
-                                        <ion-col size="6" class="text-left">
-                                            <p class="bold-text">ID Pedido:</p>
+                                        <ion-col size="7" class="text-left">
+                                            <!-- <p class="bold-text">ID Pedido:</p> -->
                                             <p class="bold-text">Estado Pedido:</p>
                                             <p class="bold-text">Costo Productos:</p>
                                             <p class="bold-text">Costo Envío:</p>
@@ -68,8 +68,8 @@
                                         </ion-col>
 
                                         <!-- Columna 2: Valores -->
-                                        <ion-col size="6" class="text-left">
-                                            <p>{{ compra.id_pedido }}</p>
+                                        <ion-col size="5" class="text-left">
+                                            <!-- <p>{{ compra.id_pedido }}</p> -->
                                             <p>{{ compra.estado }}</p>
                                             <p>Bs. {{ compra.suma_total_productos }}</p>
                                             <p>Bs. {{ compra.costo_envio }}</p>
@@ -89,7 +89,7 @@
                                         </ion-button>
                                     </ion-col>
                                     <ion-col size="6">
-                                        <ion-button size="small" color="medium" @click="irAPedido(compra.id_pedido)">
+                                        <ion-button size="small" color="medium" @click="irAPedido(this.usuario.id_usuario,compra.id_pedido)">
                                             Ver Detalles
                                         </ion-button>
                                     </ion-col>
@@ -215,8 +215,8 @@ export default {
         irADelivery(idDelivery) {
             this.$router.push(`/mostrarDelivery/${idDelivery}`);
         },
-        irAPedido(idPedido) {
-            this.$router.push(`/mostrarPedidos/${idPedido}`);
+        irAPedido(id_usuario_cliente,id_pedido) {
+            this.$router.push(`/mostrarPedidos/${id_usuario_cliente}/${id_pedido}`);
         },
         async confirmarEntrega(idPedido) {
             try {
@@ -251,7 +251,8 @@ export default {
     mounted() {
         // Si el objeto usuario tiene nombre, muestra un toast de bienvenida
         if (this.usuario && this.usuario.nombre) {
-            this.showToastMessage(`Bienvenido, ${this.usuario.nombre}`);
+            this.showToastMessage(`Bienvenido, ${this.usuario.nombre} ${this.usuario.apellido}`);
+            
         } else {
             this.showErrorMessage('No se encontró información del usuario.');
         }
@@ -261,7 +262,6 @@ export default {
 };
 </script>
 <style>
-
 .bold-text {
     font-weight: bold !important;
     color: black !important;

@@ -38,7 +38,7 @@ const routes = [
     props: true, //pasa el parámetro como una prop al componente
   }, 
   {
-    path: '/mostrarPedidos/:idPedido',
+    path: '/mostrarPedidos/:id_usuario_cliente/:id_pedido',
     name: 'mostrarPedidos',
     component: mostrarPedidosIdComponent,
     props: true, //pasa el parámetro como una prop al componente
