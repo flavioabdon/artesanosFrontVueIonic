@@ -1,61 +1,54 @@
 <template>
+
     <ion-page>
         <ion-header>
-            <ion-toolbar color="primary">
-                <ion-title>Información/Delivery</ion-title>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-menu-button></ion-menu-button>
+                </ion-buttons>
+                <ion-title class="ion-text-center">Datos del Delivery</ion-title>
             </ion-toolbar>
         </ion-header>
 
         <ion-content class="ion-padding">
             <ion-grid>
-                <ion-row class="ion-justify-content-center ion-align-items-cente">
-                    <ion-col size="12" size-md="8" size-lg="6">
-                        <ion-card>
-                            <ion-card-header>
-                                <ion-card-title class="ion-text-center">
-                                    <ion-icon name="person-circle" size="large" slot="start"></ion-icon>
-                                    DATOS DEL DELIVERY
-                                </ion-card-title>
-                            </ion-card-header>
+                <ion-row>
+                    <ion-col size="12">
+                        <!-- Mostrar datos del Delivery en tarjeta -->
+                        <ion-card class="pedido-card">
 
                             <ion-card-content>
-                                <ion-list lines="full">
-                                    <!-- Nombres -->
-                                    <ion-item>
-                                        <ion-label position="stacked" class="ion-text-bold">Nombres:</ion-label>
-                                        <ion-text>{{ deliveryData.nombre }} {{ deliveryData.apellido }}</ion-text>
-                                    </ion-item>
+                                <!-- Información del delivery en dos columnas -->
+                                <ion-grid>
+                                    <ion-row>
+                                        <!-- Columna 1: Etiquetas -->
+                                        <ion-col size="4" class="text-left padding-paragraphs">
+                                            <p class="bold-text">Nombres:</p>
+                                            <p class="bold-text">C.I.:</p>
+                                            <p class="bold-text">Email:</p>
+                                            <p class="bold-text">Vehículo:</p>
+                                            <p class="bold-text">Matrícula:</p>
+                                        </ion-col>
 
-                                    <!-- C.I. -->
-                                    <ion-item>
-                                        <ion-label position="stacked" class="ion-text-bold">C.I.:</ion-label>
-                                        <ion-text>{{ deliveryData.ci }}</ion-text>
-                                    </ion-item>
+                                        <!-- Columna 2: Valores -->
+                                        <ion-col size="8" class="text-left padding-paragraphs">
+                                            <p>{{ deliveryData.nombre }} {{ deliveryData.apellido }}</p>
+                                            <p>{{ deliveryData.ci }}</p>
+                                            <p>{{ deliveryData.email }}</p>
+                                            <p>{{ deliveryData.tipo_vehiculo }}</p>
+                                            <p>{{ deliveryData.matricula_vehiculo }}</p>
+                                        </ion-col>
 
-                                    <!-- Email -->
-                                    <ion-item>
-                                        <ion-label position="stacked" class="ion-text-bold">Email:</ion-label>
-                                        <ion-text>{{ deliveryData.email }}</ion-text>
-                                    </ion-item>
+                                    </ion-row>
+                                </ion-grid>
 
-                                    <!-- Tipo de Vehículo -->
-                                    <ion-item>
-                                        <ion-label position="stacked" class="ion-text-bold">Tipo Vehiculo:</ion-label>
-                                        <ion-text>{{ deliveryData.tipo_vehiculo }}</ion-text>
-                                    </ion-item>
-
-                                    <!-- Matrícula -->
-                                    <ion-item>
-                                        <ion-label position="stacked" class="ion-text-bold">Matricula:</ion-label>
-                                        <ion-text>{{ deliveryData.matricula_vehiculo }}</ion-text>
-                                    </ion-item>
-                                </ion-list>
                             </ion-card-content>
                         </ion-card>
                     </ion-col>
                 </ion-row>
             </ion-grid>
         </ion-content>
+
     </ion-page>
 </template>
 
@@ -102,34 +95,14 @@ export default {
 </script>
 
 <style scoped>
+/* Estilos para agregar padding a los párrafos */
+.padding-paragraphs p {
+    padding: 0.4rem 0;
+}
 
-
-/* Estilo para los labels en negrita */
-ion-label {
+.bold-text {
     font-weight: bold;
+    color: black;
 }
 
-/* Espaciado adicional y bordes en la tarjeta */
-ion-card {
-    margin-top: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-}
-
-/* Asegura que los íconos y el título estén alineados correctamente */
-ion-card-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Aumentar el tamaño de texto */
-ion-text {
-    font-size: 1rem;
-}
-
-/* Mejorar el espaciado entre los elementos */
-ion-item {
-    margin-bottom: 10px;
-}
 </style>

@@ -1,7 +1,7 @@
 <template>
     <ion-menu content-id="main-content">
         <ion-header>
-            <ion-toolbar color="secondary">
+            <ion-toolbar color="medium" style="text-align: center;">
                 <ion-title>Menu</ion-title>
             </ion-toolbar>
         </ion-header>
@@ -75,10 +75,10 @@
                                     <ion-row>
                                         <!-- Columna 1: Etiquetas (alineadas a la izquierda) -->
                                         <ion-col size="6" class="text-left">
-                                            <p><strong>ID Pedido:</strong></p>
-                                            <p><strong>Estado:</strong></p>
-                                            <p><strong>Nro Tracking:</strong></p>
-                                            <p><strong>Costo Envío:</strong></p>
+                                            <p class="bold-text">ID Pedido:</p>
+                                            <p class="bold-text">Estado:</p>
+                                            <p class="bold-text">Nro Tracking:</p>
+                                            <p class="bold-text">Costo Envío:</p>
                                         </ion-col>
 
                                         <!-- Columna 2: Respuestas (alineadas a la izquierda) -->
@@ -269,6 +269,11 @@ export default {
 };
 </script>
 <style>
+.bold-text {
+    font-weight: bold !important;
+    color: black !important;
+}
+
 ion-menu::part(backdrop) {
     background-color: rgba(0, 0, 0, 0.144);
 }

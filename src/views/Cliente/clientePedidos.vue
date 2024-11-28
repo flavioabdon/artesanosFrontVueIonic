@@ -18,7 +18,7 @@
                 <p class="ion-margin-bottom">{{ usuario.email }}</p>
             </div>
 
-            
+
             <!-- Botón Cerrar Sesión -->
             <div @click="logout"
                 style="display: flex; align-items: center; justify-content: center; margin-top: auto; padding-top: 16px; cursor: pointer;">
@@ -49,7 +49,8 @@
                         <!-- Mostrar pedidos en tarjetas -->
                         <ion-card v-for="compra in compras" :key="compra.id_pedido" class="pedido-card">
                             <ion-card-header>
-                                <ion-card-title style="font-size: 1.5rem;margin-top:1rem;">Pedido # {{ compra.num_fila }}</ion-card-title>
+                                <ion-card-title style="font-size: 1.5rem;margin-top:1rem;">Pedido # {{ compra.num_fila
+                                    }}</ion-card-title>
                             </ion-card-header>
 
                             <ion-card-content>
@@ -58,11 +59,12 @@
                                     <ion-row>
                                         <!-- Columna 1: Etiquetas -->
                                         <ion-col size="6" class="text-left">
-                                            <p><strong>ID Pedido:</strong></p>
-                                            <p><strong>Estado Pedido:</strong></p>
-                                            <p><strong>Costo Productos:</strong></p>
-                                            <p><strong>Costo Envío:</strong></p>
-                                            <p><strong>Total:</strong></p>
+                                            <p class="bold-text">ID Pedido:</p>
+                                            <p class="bold-text">Estado Pedido:</p>
+                                            <p class="bold-text">Costo Productos:</p>
+                                            <p class="bold-text">Costo Envío:</p>
+                                            <p class="bold-text">Total:</p>
+
                                         </ion-col>
 
                                         <!-- Columna 2: Valores -->
@@ -114,7 +116,7 @@
                             Total: Bs.
                             {{
                                 compras.reduce((total, compra) => total + parseFloat(compra.suma_total), 0)
-                            }} 
+                            }}
                         </h3>
                     </ion-col>
                 </ion-row>
@@ -237,7 +239,7 @@ export default {
                 // Opcional: Actualizar el estado de la entrega en la interfaz
                 const compra = this.compras.find(c => c.id_pedido === idPedido);
                 if (compra) {
-                    compra.estado = 'Entregado'; // Cambiar a un estado actualizado, si aplica
+                    compra.estado = 'Finalizado'; // Cambiar a un estado actualizado, si aplica
                 }
             } catch (error) {
                 console.error('Error al confirmar entrega:', error);
@@ -259,6 +261,13 @@ export default {
 };
 </script>
 <style>
+
+.bold-text {
+    font-weight: bold !important;
+    color: black !important;
+}
+
+
 ion-menu::part(backdrop) {
     background-color: rgba(0, 0, 0, 0.144);
 }
