@@ -216,7 +216,7 @@ export default {
             this.$router.push(`/mostrarDelivery/${idDelivery}`);
         },
         irAPedido(id_usuario_cliente,id_pedido) {
-            this.$router.push(`/mostrarPedidos/${id_usuario_cliente}/${id_pedido}`);
+            this.$router.push(`/mostrarPedidosCliente/${id_usuario_cliente}/${id_pedido}`);
         },
         async confirmarEntrega(idPedido) {
             try {

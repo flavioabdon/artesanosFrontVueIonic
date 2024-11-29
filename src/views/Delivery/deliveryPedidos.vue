@@ -74,9 +74,9 @@
                                 <ion-grid>
                                     <ion-row>
                                         <!-- Columna 1: Etiquetas (alineadas a la izquierda) -->
-                                        <ion-col size="6" class="text-left">
-                                            <p class="bold-text">ID Pedido:</p>
-                                            <p class="bold-text">ID Cliente:</p>
+                                        <ion-col size="7" class="text-left">
+                                            <!-- <p class="bold-text">ID Pedido:</p>
+                                            <p class="bold-text">ID Cliente:</p> -->
                                             <p class="bold-text">Estado:</p>
                                             <p class="bold-text">Costo Envío:</p>
                                             <p class="bold-text">Direcciones:</p>
@@ -84,9 +84,9 @@
                                         </ion-col>
 
                                         <!-- Columna 2: Respuestas (alineadas a la izquierda) -->
-                                        <ion-col size="6" class="text-left">
-                                            <p>{{ pedido.id_pedido }}</p>
-                                            <p>{{ pedido.id_usuario_cliente }}</p>
+                                        <ion-col size="5" class="text-left">
+                                            <!-- <p>{{ pedido.id_pedido }}</p>
+                                            <p>{{ pedido.id_usuario_cliente }}</p> -->
                                             <p>{{ pedido.estado }}</p>
                                             <p>Bs. {{ pedido.costo_envio }}</p>
                                         </ion-col>
@@ -115,7 +115,7 @@
                                 <ion-row>
                                     <ion-col size="6">
                                         <ion-button size="small" color="medium"
-                                            @click="detalleProductos(pedido.id_pedido, pedido.id_usuario_cliente)">
+                                            @click="irAPedido(pedido.id_usuario_cliente, pedido.id_pedido)">
                                             Ver Detalles
                                         </ion-button>
                                     </ion-col>
@@ -266,6 +266,9 @@ export default {
         irATomarPedidos() {
             this.$router.push(`/bienvenidaDelivery`);
         },
+        irAPedido(id_usuario_cliente,id_pedido) {
+            this.$router.push(`/mostrarPedidos/${id_usuario_cliente}/${id_pedido}`);
+        },
         mostrarMapa(direccion) {
             this.direccionSeleccionada = direccion; // Actualiza la dirección seleccionada
         },
@@ -273,7 +276,7 @@ export default {
     mounted() {
         // Si el objeto usuario tiene nombre, muestra un toast de bienvenida
         if (this.usuario && this.usuario.nombre) {
-            this.showToastMessage(`Bienvenido, ${this.usuario.nombre}`);
+            this.showToastMessage(`Bienvenido, ${this.usuario.nombre} ${this.usuario.apellido}`);
         } else {
             this.showErrorMessage('No se encontró información del usuario.');
         }

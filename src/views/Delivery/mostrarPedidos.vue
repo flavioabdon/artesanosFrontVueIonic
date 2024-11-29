@@ -6,7 +6,7 @@
                 <ion-buttons slot="start">
                     <ion-menu-button></ion-menu-button>
                 </ion-buttons>
-                <ion-title class="ion-text-center">Detalles de Compras</ion-title>
+                <ion-title class="ion-text-center">Detalles Productos</ion-title>
             </ion-toolbar>
         </ion-header>
 
@@ -81,7 +81,7 @@
                                                 <ion-col size="7" class="text-left">{{ producto.numero_artesano
                                                     }}</ion-col>
                                             </ion-row>
-                                          
+                                            
                                         </ion-col>
                                     </ion-row>
                                 </ion-grid>
@@ -124,7 +124,7 @@ import {
 } from '@ionic/vue';
 
 export default {
-    name: 'mostrarPedidosIdComponent', //nombre de componente
+    name: 'mostrarPedidosDeliveryComponent', //nombre de componente
     props: {
         id_pedido: {
             type: String,
@@ -142,7 +142,7 @@ export default {
     methods: {
         async cargarDatos() {
             try {
-                const response = await fetch(`http://localhost:3000/listarDetalleComprasCliente/${this.id_usuario_cliente}/${this.id_pedido}`);
+                const response = await fetch(`http://localhost:3000/listarDetalleVentasArtesano/${this.id_usuario_cliente}/${this.id_pedido}`);
                 if (!response.ok) throw new Error('Error al cargar datos');
                 const data = await response.json();
                 this.pedidos = data;

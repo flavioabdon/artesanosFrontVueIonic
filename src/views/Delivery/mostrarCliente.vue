@@ -6,7 +6,7 @@
                 <ion-buttons slot="start">
                     <ion-menu-button></ion-menu-button>
                 </ion-buttons>
-                <ion-title class="ion-text-center">Datos del Delivery</ion-title>
+                <ion-title class="ion-text-center">Datos del Cliente</ion-title>
             </ion-toolbar>
         </ion-header>
 
@@ -14,11 +14,11 @@
             <ion-grid>
                 <ion-row>
                     <ion-col size="12">
-                        <!-- Mostrar datos del Delivery en tarjeta -->
+                       
                         <ion-card class="pedido-card">
 
                             <ion-card-content>
-                                <!-- Información del delivery en dos columnas -->
+                           
                                 <ion-grid>
                                     <ion-row>
                                         <!-- Columna 1: Etiquetas -->
@@ -27,22 +27,16 @@
                                             <p class="bold-text">C.I.:</p>
                                             <p class="bold-text">Email:</p>
                                             <p class="bold-text">numero:</p>
-                                            <p class="bold-text">Vehículo:</p>
-                                            <p class="bold-text">Matrícula:</p>
-
+                                          
                                         </ion-col>
 
                                         <!-- Columna 2: Valores -->
                                         <ion-col size="8" class="text-left padding-paragraphs">
-                                            <p>{{ deliveryData.nombre }} {{ deliveryData.apellido }}</p>
-                                            <p>{{ deliveryData.ci }}</p>
-                                            <p>{{ deliveryData.email }}</p>
-                                            <p>{{ deliveryData.numero_contacto }}</p>
-                                            <p>{{ deliveryData.tipo_vehiculo }}</p>
-                                            <p>{{ deliveryData.matricula_vehiculo }}</p>
-
+                                            <p>{{ clienteData.nombre }} {{ clienteData.apellido }}</p>
+                                            <p>{{ clienteData.ci }}</p>
+                                            <p>{{ clienteData.email }}</p>
+                                            <p>{{ clienteData.numero_contacto }}</p>
                                         </ion-col>
-
 
                                     </ion-row>
                                 </ion-grid>
@@ -63,9 +57,9 @@ import { IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTit
 import { defineComponent } from 'vue';
 
 export default {
-    name: 'mostrarDeliveryIdComponent', //nombre de componente
+    name: 'mostrarClienteIdComponent', //nombre de componente
     props: {
-        idDelivery: {
+        idCliente: {
             type: [String, Number], // Permitimos que sea un String o Number
             required: true // La prop es obligatoria
         }
@@ -75,26 +69,26 @@ export default {
     },
     data() {
         return {
-            deliveryData: {} // Aquí almacenamos los datos del delivery
+            clienteData: {} // Aquí almacenamos los datos del cliente
         };
     },
     methods: {
-        // Método para cargar los datos del Delivery
-        async cargarDatosDelivery() {
+        // Método para cargar los datos del cliente
+        async cargarDatosCliente() {
             try {
-                // Usamos la prop 'idDelivery' para hacer la solicitud
-                const response = await fetch(`http://localhost:3000/obtenerDatosDelivery/${this.idDelivery}`);
-                if (!response.ok) throw new Error('Error al cargar los datos del Delivery');
+                // Usamos la prop 'idcliente' para hacer la solicitud
+                const response = await fetch(`http://localhost:3000/obtenerDatosCliente/${this.idCliente}`);
+                if (!response.ok) throw new Error('Error al cargar los datos del cliente');
                 const data = await response.json();
-                this.deliveryData = data[0];
+                this.clienteData = data[0];
             } catch (error) {
-                console.error('Error al cargar los datos del Delivery:', error);
+                console.error('Error al cargar los datos del cliente:', error);
                 // Puedes mostrar un mensaje de error si lo deseas
             }
         }
     },
     mounted() {
-        this.cargarDatosDelivery(); // Cargar los datos del Delivery al montar el componente
+        this.cargarDatosCliente(); 
     }
 };
 </script>
@@ -109,4 +103,5 @@ export default {
     font-weight: bold;
     color: black;
 }
+
 </style>
