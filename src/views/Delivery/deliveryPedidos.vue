@@ -132,6 +132,9 @@
                 </ion-row>
             </ion-grid>
 
+            <!-- Contenedor para el mapa -->
+            <div id="map-container" style="margin-top: 20px; height: 400px; width: 100%;"></div>
+
             <!-- Toasts para notificaciones -->
             <ion-toast :is-open="showToast" :message="toastMessage" duration="2000" @did-close="showToast = false"
                 color="success"></ion-toast>
@@ -144,6 +147,9 @@
 
 <script>
 import Mapa from './mapa.vue'; // Componente del mapa
+import L from 'leaflet'; // Importar Leaflet
+import 'leaflet/dist/leaflet.css'; // Estilos de Leaflet
+
 import {
     IonButtons, IonContent, IonMenu, IonMenuButton, IonToolbar,
     IonToast, IonItem, IonInput, IonCardContent, IonCardHeader,
@@ -176,7 +182,7 @@ export default {
 
             pedidosDelivery: [], // Aquí se almacenarán los datos de la API
             sumaTotal: 0,
-            direccionSeleccionada: null, // Dirección actualmente seleccionada para mostrar el mapa
+            mapInstance: null, // Instancia del mapa Leaflet
         };
     },
     methods: {
@@ -269,9 +275,86 @@ export default {
         irAPedido(id_usuario_cliente,id_pedido) {
             this.$router.push(`/mostrarPedidos/${id_usuario_cliente}/${id_pedido}`);
         },
-        mostrarMapa(direccion) {
-            this.direccionSeleccionada = direccion; // Actualiza la dirección seleccionada
+        limpiarMapa() {
+        // Limpia el mapa si ya está cargado
+        if (this.mapInstance) {
+            this.mapInstance.remove();
+            this.mapInstance = null;
+        }
+        // Limpia el contenedor del mapa
+        const container = document.getElementById('map-container');
+        if (container) {
+            container.innerHTML = ''; // Elimina contenido previo
+            const mapDiv = document.createElement('div');
+            mapDiv.id = 'map'; // Reagrega el div para el nuevo mapa
+            mapDiv.style.width = '100%';
+            mapDiv.style.height = '100%';
+            container.appendChild(mapDiv);
+        }
         },
+
+        async mostrarMapaAlmacen(idPedido) {
+            try {
+                // Limpia el contenedor y el mapa previo
+                this.limpiarMapa();
+
+                // Fetch para obtener coordenadas del almacén
+                const response = await fetch(`http://localhost:3000/obtenerCoordenadasAlmacenes/${idPedido}`);
+                if (!response.ok) throw new Error(`Error en la solicitud: ${response.statusText}`);
+
+                const coordenadas = await response.json();
+
+                // Inicializa el mapa centrado en el primer punto
+                if (coordenadas.length > 0) {
+                    const { latitud, longitud } = coordenadas[0]; // Primer punto como centro inicial
+                    this.mapInstance = L.map('map').setView([longitud,latitud], 13);
+
+                    // Añade capa de tiles
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                    }).addTo(this.mapInstance);
+                }
+
+                // Añade marcadores para cada punto
+                var i=0;
+                coordenadas.forEach(almacen => {
+                    const { latitud, longitud, id_almacen } = almacen;
+                    i++;
+                    // Crea un marcador
+                    L.marker([longitud,latitud])
+                        .addTo(this.mapInstance)
+                        .bindPopup(`${i}º Almacén`) // Muestra información al hacer clic
+                        .openPopup();
+                });
+            } catch (error) {
+                console.error('Error al mostrar el mapa del almacén:', error);
+                alert('No se pudo cargar el mapa del almacén.');
+            }
+        },
+
+        mostrarMapa(direccionEnvio) {
+        try {
+            // Limpia el contenedor y el mapa previo
+            this.limpiarMapa();
+
+            // Extrae las coordenadas de la dirección de envío
+            const [latitud, longitud] = direccionEnvio.split(',').map(Number);
+
+            // Inicializa un nuevo mapa
+            this.mapInstance = L.map('map').setView([latitud, longitud], 13);
+
+            // Añade capa de tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            }).addTo(this.mapInstance);
+
+            // Añade marcador
+            L.marker([latitud, longitud]).addTo(this.mapInstance).bindPopup('Dirección de Envío').openPopup();
+        } catch (error) {
+            console.error('Error al mostrar el mapa de la dirección de envío:', error);
+            alert('No se pudo cargar el mapa de la dirección de envío.');
+        }
+      },
     },
     mounted() {
         // Si el objeto usuario tiene nombre, muestra un toast de bienvenida
